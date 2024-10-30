@@ -2,7 +2,6 @@ package com.gfunk77.login3.security.manager;
 
 import com.gfunk77.login3.entity.User;
 import com.gfunk77.login3.service.UserService;
-import com.gfunk77.login3.service.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

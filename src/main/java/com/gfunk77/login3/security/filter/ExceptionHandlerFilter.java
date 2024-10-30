@@ -1,5 +1,6 @@
 package com.gfunk77.login3.security.filter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.gfunk77.login3.entity.User;
 import com.gfunk77.login3.exception.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
@@ -20,8 +21,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.getWriter().write("Username does not exist");
             response.getWriter().flush();
-        }
-        catch (RuntimeException e) {
+        } catch (JWTVerificationException e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Invalid JWT Token");
+            response.getWriter().flush();
+        } catch (RuntimeException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Bad Request");

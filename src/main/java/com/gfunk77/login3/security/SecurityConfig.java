@@ -2,6 +2,7 @@ package com.gfunk77.login3.security;
 
 import com.gfunk77.login3.security.filter.AuthenticationFilter;
 import com.gfunk77.login3.security.filter.ExceptionHandlerFilter;
+import com.gfunk77.login3.security.filter.JWTAuthorizationFilter;
 import com.gfunk77.login3.security.manager.CustomAuthenticationManager;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             AuthenticationFilter authenticationFilter = new AuthenticationFilter(
                     customAuthenticationManager);
-            authenticationFilter.setFilterProcessesUrl("/authenticate");
+            authenticationFilter.setFilterProcessesUrl("/login");
         http
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -35,6 +36,7 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
+                .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
